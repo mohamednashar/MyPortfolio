@@ -11,3 +11,5 @@ yarn-debug.log*
 yarn-error.log*
 server/data/db/*
 !server/data/db/.gitkeep
+
+.vercel
