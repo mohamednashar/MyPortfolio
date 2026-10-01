@@ -47,6 +47,28 @@ const AdminSettings = () => {
   const [saving, setSaving] = useState(false);
   const [statusMessage, setStatusMessage] = useState({ success: null, text: '' });
   const [uploadingResume, setUploadingResume] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const data = new FormData();
+    data.append('image', file);
+
+    setUploadingAvatar(true);
+    try {
+      const res = await uploadAPI.uploadImage(data);
+      if (res.data?.url) {
+        setProfile((prev) => ({ ...prev, avatar: res.data.url }));
+        setStatusMessage({ success: true, text: 'Profile picture uploaded! Click Save Changes below to apply.' });
+      }
+    } catch (err) {
+      alert('Avatar upload failed: ' + (err.response?.data?.message || err.message));
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -205,6 +227,59 @@ const AdminSettings = () => {
             <h3 className="text-base font-display font-semibold text-white mb-2">
               Personal Information
             </h3>
+
+            {/* Profile Picture Card */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-dark-900/80 border border-slate-800 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+              <div className="relative group shrink-0">
+                <div className="w-24 h-24 rounded-2xl p-0.5 bg-gradient-to-tr from-cyan-400 to-indigo-600 shadow-lg shadow-cyan-500/25">
+                  <img
+                    src={profile.avatar || '/mohamed-alaa.jpg'}
+                    alt="Avatar preview"
+                    className="w-full h-full object-cover rounded-[14px]"
+                  />
+                </div>
+              </div>
+
+              <div className="flex-1 space-y-2 text-center sm:text-left w-full">
+                <h4 className="text-sm font-semibold text-white">Profile Picture / Avatar</h4>
+                <p className="text-xs text-slate-400">
+                  This photo will be displayed prominently across the Hero, About section, and navigation.
+                </p>
+
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 pt-1">
+                  <label className="cursor-pointer inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 text-xs font-semibold rounded-xl border border-cyan-500/30 transition-colors">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>{uploadingAvatar ? 'Uploading...' : 'Upload New Photo'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarUpload}
+                      className="hidden"
+                      disabled={uploadingAvatar}
+                    />
+                  </label>
+
+                  <button
+                    type="button"
+                    onClick={() => setProfile((prev) => ({ ...prev, avatar: '/mohamed-alaa.jpg' }))}
+                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-xl border border-slate-700 transition-colors"
+                  >
+                    Reset to Default Photo
+                  </button>
+                </div>
+
+                <div className="pt-2">
+                  <label className="block text-[11px] text-slate-500 mb-1">Direct Image URL</label>
+                  <input
+                    type="text"
+                    value={profile.avatar || ''}
+                    onChange={(e) => setProfile({ ...profile, avatar: e.target.value })}
+                    className="w-full glass-input px-3 py-1.5 rounded-lg text-xs text-slate-100 font-mono"
+                    placeholder="/mohamed-alaa.jpg or https://..."
+                  />
+                </div>
+              </div>
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>

@@ -30,15 +30,30 @@ const Hero = ({ profile }) => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-7 space-y-6 sm:space-y-8 text-center lg:text-left"
           >
-            {/* Availability Pill */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-dark-900/90 border border-slate-700/60 shadow-inner">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-xs font-medium text-slate-300">
-                {profile?.statusText || 'Available for Full-time Roles & Contracts'}
-              </span>
+            {/* Profile Avatar & Availability Pill */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+              <div className="relative group">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl p-0.5 bg-gradient-to-tr from-cyan-400 via-indigo-500 to-teal-400 shadow-lg shadow-cyan-500/25 group-hover:scale-105 transition-transform duration-300">
+                  <img
+                    src={profile?.avatar || '/mohamed-alaa.jpg'}
+                    alt={profile?.name || 'Mohamed Alaa'}
+                    className="w-full h-full object-cover rounded-[14px]"
+                  />
+                </div>
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-dark-950 flex items-center justify-center" title="Online / Available">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                </span>
+              </div>
+
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-dark-900/90 border border-slate-700/60 shadow-inner">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-xs font-medium text-slate-300">
+                  {profile?.statusText || 'Available for Full-time Roles & Contracts'}
+                </span>
+              </div>
             </div>
 
             {/* Main Headline */}

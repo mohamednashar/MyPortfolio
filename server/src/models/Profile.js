@@ -31,7 +31,7 @@ const profileSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: '',
+      default: '/mohamed-alaa.jpg',
     },
     resumeUrl: {
       type: String,

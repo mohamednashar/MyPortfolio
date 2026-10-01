@@ -1,6 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, Briefcase, Trophy, Code2, CheckCircle, ArrowRight } from 'lucide-react';
+import {
+  GraduationCap,
+  Briefcase,
+  Trophy,
+  Code2,
+  CheckCircle,
+  ArrowRight,
+  Sparkles,
+  MapPin,
+} from 'lucide-react';
 import SectionHeader from '../common/SectionHeader';
 import Button from '../common/Button';
 
@@ -28,6 +37,8 @@ const About = ({ profile }) => {
     },
   ];
 
+  const avatarUrl = profile?.avatar || '/mohamed-alaa.jpg';
+
   return (
     <section id="about" className="py-20 sm:py-28 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -43,13 +54,81 @@ const About = ({ profile }) => {
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left: Detailed Story */}
+          {/* Left Column: Mohamed's Portrait Card with Floating Chips */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-5 flex justify-center"
+          >
+            <div className="relative w-full max-w-md">
+              {/* Glowing decorative ambient aura behind the picture */}
+              <div className="absolute -inset-4 bg-gradient-to-tr from-cyan-500/25 via-indigo-500/20 to-teal-500/20 rounded-3xl blur-2xl opacity-75 -z-10" />
+
+              {/* Main Photo Card */}
+              <div className="glass-card rounded-3xl p-3 sm:p-4 border border-slate-700/80 shadow-2xl relative overflow-hidden group">
+                <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-dark-900">
+                  <img
+                    src={avatarUrl}
+                    alt={profile?.name || 'Mohamed Alaa'}
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {/* Subtle gradient vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark-950/90 via-transparent to-transparent opacity-80" />
+
+                  {/* Name overlay at bottom of photo */}
+                  <div className="absolute bottom-4 left-4 right-4 space-y-1">
+                    <span className="text-xs uppercase tracking-wider text-cyan-400 font-semibold flex items-center gap-1.5 font-mono">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      Frontend & Full-Stack Developer
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
+                      {profile?.name || 'Mohamed Alaa'}
+                    </h3>
+                    <p className="text-xs text-slate-300 flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                      <span>{profile?.location || 'Minya, Egypt'}</span>
+                      <span className="text-slate-600">•</span>
+                      <span className="text-emerald-400 font-medium">Available</span>
+                    </p>
+                  </div>
+                </div>
+
+                {/* Floating Chip 1: Top Right - Minya University */}
+                <motion.div
+                  initial={{ y: -10, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="absolute -top-3 -right-3 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dark-900/90 border border-slate-700/80 shadow-xl backdrop-blur-md text-xs text-slate-200"
+                >
+                  <GraduationCap className="w-4 h-4 text-cyan-400 shrink-0" />
+                  <span className="font-medium">Minya University '24</span>
+                </motion.div>
+
+                {/* Floating Chip 2: Bottom Left - 600+ ICPC */}
+                <motion.div
+                  initial={{ y: 10, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                  className="absolute -bottom-3 -left-3 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dark-900/90 border border-slate-700/80 shadow-xl backdrop-blur-md text-xs text-slate-200"
+                >
+                  <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
+                  <span className="font-medium">600+ ICPC Problems Solved</span>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Detailed Story & Core Highlights */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="lg:col-span-6 space-y-6"
+            className="lg:col-span-7 space-y-6"
           >
             <div className="glass-card rounded-2xl p-6 sm:p-8 border border-slate-800 space-y-4">
               <h3 className="text-xl sm:text-2xl font-display font-semibold text-white">
@@ -103,37 +182,31 @@ const About = ({ profile }) => {
                 </Button>
               </div>
             </div>
-          </motion.div>
 
-          {/* Right: Key Pillar Cards */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6"
-          >
-            {highlights.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={index}
-                  className="glass-card glass-card-hover rounded-2xl p-5 border border-slate-800/80 group flex flex-col justify-between"
-                >
-                  <div className="space-y-3">
-                    <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Icon className="w-5 h-5" />
+            {/* Pillar Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {highlights.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={index}
+                    className="glass-card glass-card-hover rounded-xl p-4 border border-slate-800/80 group flex flex-col justify-between"
+                  >
+                    <div className="space-y-2">
+                      <div className="w-9 h-9 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <h4 className="text-sm font-display font-semibold text-white group-hover:text-cyan-400 transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="text-xs text-slate-400 leading-relaxed font-light">
+                        {item.desc}
+                      </p>
                     </div>
-                    <h4 className="text-base font-display font-semibold text-white group-hover:text-cyan-400 transition-colors">
-                      {item.title}
-                    </h4>
-                    <p className="text-xs text-slate-400 leading-relaxed font-light">
-                      {item.desc}
-                    </p>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </motion.div>
         </div>
       </div>

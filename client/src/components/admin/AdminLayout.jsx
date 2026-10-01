@@ -136,13 +136,20 @@ const AdminLayout = ({ children, title = 'Dashboard' }) => {
           </Link>
 
           <div className="flex items-center justify-between pt-2">
-            <div className="min-w-0 pr-2">
-              <span className="text-xs font-semibold text-white block truncate">
-                {user?.name || 'Mohamed Alaa'}
-              </span>
-              <span className="text-[11px] text-slate-500 block truncate">
-                {user?.email || 'Admin'}
-              </span>
+            <div className="flex items-center gap-2.5 min-w-0 pr-2">
+              <img
+                src="/mohamed-alaa.jpg"
+                alt="Mohamed Alaa"
+                className="w-8 h-8 rounded-lg object-cover shrink-0 border border-slate-700"
+              />
+              <div className="min-w-0">
+                <span className="text-xs font-semibold text-white block truncate">
+                  {user?.name || 'Mohamed Alaa'}
+                </span>
+                <span className="text-[11px] text-slate-500 block truncate">
+                  {user?.email || 'Admin'}
+                </span>
+              </div>
             </div>
             <button
               onClick={handleLogout}

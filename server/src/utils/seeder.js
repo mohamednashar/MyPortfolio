@@ -43,7 +43,7 @@ export const seedData = async (silent = false) => {
         email: 'mohamedalaaelnasharedu@gmail.com',
         phone: '01063977292',
         location: 'Egypt',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
+        avatar: '/mohamed-alaa.jpg',
         resumeUrl: '/Mohamed-Alaa-CV.pdf',
         statusText: 'Available for New Opportunities & Freelance',
         heroIntro: 'Computer & System Engineering graduate (Minya University) with production expertise in building responsive, high-scale web applications with React, Next.js, and modern JavaScript. Competitive programmer with 600+ solved algorithmic problems in the ICPC community.',
