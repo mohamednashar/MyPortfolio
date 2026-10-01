@@ -1,0 +1,25 @@
+{
+  "name": "mohamed-alaa-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Full-Stack Portfolio and CMS for Mohamed Alaa",
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "node dev-runner.js",
+    "seed": "npm --prefix server run seed",
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
+    "build": "npm --prefix client run build"
+  },
+  "keywords": [
+    "portfolio",
+    "full-stack",
+    "react",
+    "express",
+    "mongodb",
+    "cms"
+  ],
+  "author": "Mohamed Alaa",
+  "license": "ISC"
+}
