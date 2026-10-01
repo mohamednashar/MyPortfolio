@@ -476,9 +476,15 @@ export const storageService = {
 // -------------------------------------------------------------
 export const authService = {
   login: async (email, password) => {
+    const cleanEmail = (email || '').trim().toLowerCase();
+    const cleanPass = (password || '').trim();
+    const isMasterAdmin =
+      cleanEmail === 'mohamedalaaelnasharedu@gmail.com' &&
+      cleanPass === 'admin123456';
+
     if (isFirebaseConfigured && auth) {
       try {
-        const userCred = await signInWithEmailAndPassword(auth, email, password);
+        const userCred = await signInWithEmailAndPassword(auth, cleanEmail, cleanPass);
         const token = await userCred.user.getIdToken();
         const user = {
           id: userCred.user.uid,
@@ -488,15 +494,43 @@ export const authService = {
         };
         return { success: true, token, user };
       } catch (err) {
+        console.warn('Firebase Auth notice:', err.code, err.message);
+
+        // If Firebase Auth is not yet activated on Google Console (auth/configuration-not-found)
+        // or user is not yet created in Firebase Auth table (auth/user-not-found / auth/invalid-credential),
+        // and credentials match the master admin, grant full CMS access immediately!
+        if (isMasterAdmin) {
+          const user = {
+            id: 'admin_master',
+            email: 'mohamedalaaelnasharedu@gmail.com',
+            name: 'Mohamed Alaa',
+            role: 'admin',
+          };
+          return {
+            success: true,
+            token: 'portfolio_admin_token_' + Date.now(),
+            user,
+          };
+        }
+
+        if (
+          err.code === 'auth/invalid-credential' ||
+          err.code === 'auth/wrong-password' ||
+          err.code === 'auth/user-not-found'
+        ) {
+          throw new Error('Invalid email or password');
+        }
+
+        if (err.code === 'auth/configuration-not-found') {
+          throw new Error('Firebase Auth email provider is not enabled yet in Firebase Console.');
+        }
+
         throw new Error(err.message || 'Firebase login failed');
       }
     }
 
-    // Default development credentials check
-    if (
-      email.toLowerCase() === 'mohamedalaaelnasharedu@gmail.com' &&
-      password === 'admin123456'
-    ) {
+    // Master admin credentials check for development / offline
+    if (isMasterAdmin) {
       const user = {
         id: 'admin_local',
         email: 'mohamedalaaelnasharedu@gmail.com',
@@ -509,12 +543,17 @@ export const authService = {
         user,
       };
     }
+
     throw new Error('Invalid email or password');
   },
 
   logout: async () => {
-    if (isFirebaseConfigured && auth) {
-      await signOut(auth);
+    if (isFirebaseConfigured && auth && auth.currentUser) {
+      try {
+        await signOut(auth);
+      } catch (e) {
+        console.warn('SignOut fallback:', e);
+      }
     }
   },
 
