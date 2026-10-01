@@ -11,8 +11,8 @@ export const defaultProfile = {
   heroIntro: 'Computer & System Engineering graduate from Minya University with production expertise in building responsive, high-scale web applications with React, Next.js, and modern JavaScript. Competitive programmer with 600+ solved algorithmic problems in the ICPC community.',
   aboutBio: 'I am a passionate Full-Stack / Frontend Developer and Computer & System Engineering graduate from Minya University (Faculty of Engineering). With extensive production experience at InstaTech and intensive hands-on frontend internships, I specialize in crafting elegant, responsive user interfaces and integrating robust APIs. My strong background in competitive programming (600+ problems solved in the ICPC community and ECPC 2022 contestant) equips me with algorithmic rigor and problem-solving excellence.',
   socialLinks: {
-    github: 'https://github.com/',
-    linkedin: 'https://linkedin.com/',
+    github: 'https://github.com/mohamednashar',
+    linkedin: 'https://linkedin.com/in/mohamedalaa',
     portfolio: 'https://mohamedalaa.dev',
     twitter: '',
   },
