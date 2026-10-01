@@ -16,14 +16,21 @@ import {
   experienceAPI,
   educationAPI,
 } from '../api';
+import {
+  defaultProfile,
+  defaultProjects,
+  defaultSkills,
+  defaultExperiences,
+  defaultEducations,
+} from '../data/defaultData';
 
 const HomePage = () => {
-  const [profile, setProfile] = useState(null);
-  const [projects, setProjects] = useState([]);
-  const [skills, setSkills] = useState([]);
-  const [experiences, setExperiences] = useState([]);
-  const [educations, setEducations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(defaultProfile);
+  const [projects, setProjects] = useState(defaultProjects);
+  const [skills, setSkills] = useState(defaultSkills);
+  const [experiences, setExperiences] = useState(defaultExperiences);
+  const [educations, setEducations] = useState(defaultEducations);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchAllData = async () => {
