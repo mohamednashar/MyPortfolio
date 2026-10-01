@@ -1,105 +1,200 @@
-import axios from 'axios';
+import {
+  profileService,
+  projectsService,
+  skillsService,
+  experienceService,
+  educationService,
+  messagesService,
+  storageService,
+  authService,
+} from '../firebase/services';
 
-const getBaseURL = () => {
-  if (import.meta.env.VITE_API_URL) {
-    const raw = import.meta.env.VITE_API_URL.replace(/\/$/, '');
-    return raw.endsWith('/api') ? raw : `${raw}/api`;
-  }
-  return '/api';
-};
-
-const api = axios.create({
-  baseURL: getBaseURL(),
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Request interceptor to attach JWT token
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('portfolio_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-// Response interceptor to handle 401s gracefully
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      if (window.location.pathname.startsWith('/admin') && window.location.pathname !== '/admin/login') {
-        localStorage.removeItem('portfolio_token');
-        localStorage.removeItem('portfolio_user');
-        window.location.href = '/admin/login';
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
+// Firebase-driven API abstraction maintaining 100% component compatibility
 export const authAPI = {
-  login: (credentials) => api.post('/auth/login', credentials),
-  getMe: () => api.get('/auth/me'),
-  updatePassword: (passwords) => api.put('/auth/update-password', passwords),
+  login: async (credentials) => {
+    const res = await authService.login(credentials.email, credentials.password);
+    return { data: res };
+  },
+  getMe: async () => {
+    const user = JSON.parse(localStorage.getItem('portfolio_user') || 'null');
+    return { data: { success: true, user } };
+  },
+  updatePassword: async (passwords) => {
+    const res = await authService.updatePassword(passwords.newPassword);
+    return { data: { success: true, ...res } };
+  },
 };
 
 export const profileAPI = {
-  getProfile: () => api.get('/profile'),
-  updateProfile: (data) => api.put('/profile', data),
+  getProfile: async () => {
+    const data = await profileService.getProfile();
+    return { data: { success: true, data } };
+  },
+  updateProfile: async (data) => {
+    const updated = await profileService.updateProfile(data);
+    return { data: { success: true, data: updated } };
+  },
 };
 
 export const projectsAPI = {
-  getAll: (params) => api.get('/projects', { params }),
-  getOne: (idOrSlug) => api.get(`/projects/${idOrSlug}`),
-  create: (data) => api.post('/projects', data),
-  update: (id, data) => api.put(`/projects/${id}`, data),
-  delete: (id) => api.delete(`/projects/${id}`),
+  getAll: async (params) => {
+    const data = await projectsService.getAll(params);
+    return { data: { success: true, data, count: data.length } };
+  },
+  getOne: async (idOrSlug) => {
+    const data = await projectsService.getOne(idOrSlug);
+    return { data: { success: true, data } };
+  },
+  create: async (data) => {
+    const created = await projectsService.create(data);
+    return { data: { success: true, data: created } };
+  },
+  update: async (id, data) => {
+    const updated = await projectsService.update(id, data);
+    return { data: { success: true, data: updated } };
+  },
+  delete: async (id) => {
+    await projectsService.delete(id);
+    return { data: { success: true } };
+  },
 };
 
 export const experienceAPI = {
-  getAll: () => api.get('/experience'),
-  create: (data) => api.post('/experience', data),
-  update: (id, data) => api.put(`/experience/${id}`, data),
-  delete: (id) => api.delete(`/experience/${id}`),
+  getAll: async () => {
+    const data = await experienceService.getAll();
+    return { data: { success: true, data, count: data.length } };
+  },
+  create: async (data) => {
+    const created = await experienceService.create(data);
+    return { data: { success: true, data: created } };
+  },
+  update: async (id, data) => {
+    const updated = await experienceService.update(id, data);
+    return { data: { success: true, data: updated } };
+  },
+  delete: async (id) => {
+    await experienceService.delete(id);
+    return { data: { success: true } };
+  },
 };
 
 export const skillsAPI = {
-  getAll: (params) => api.get('/skills', { params }),
-  create: (data) => api.post('/skills', data),
-  update: (id, data) => api.put(`/skills/${id}`, data),
-  delete: (id) => api.delete(`/skills/${id}`),
+  getAll: async (params) => {
+    const data = await skillsService.getAll();
+    return { data: { success: true, data, count: data.length } };
+  },
+  create: async (data) => {
+    const created = await skillsService.create(data);
+    return { data: { success: true, data: created } };
+  },
+  update: async (id, data) => {
+    const updated = await skillsService.update(id, data);
+    return { data: { success: true, data: updated } };
+  },
+  delete: async (id) => {
+    await skillsService.delete(id);
+    return { data: { success: true } };
+  },
 };
 
 export const educationAPI = {
-  getAll: () => api.get('/education'),
-  create: (data) => api.post('/education', data),
-  update: (id, data) => api.put(`/education/${id}`, data),
-  delete: (id) => api.delete(`/education/${id}`),
+  getAll: async () => {
+    const data = await educationService.getAll();
+    return { data: { success: true, data, count: data.length } };
+  },
+  create: async (data) => {
+    const created = await educationService.create(data);
+    return { data: { success: true, data: created } };
+  },
+  update: async (id, data) => {
+    const updated = await educationService.update(id, data);
+    return { data: { success: true, data: updated } };
+  },
+  delete: async (id) => {
+    await educationService.delete(id);
+    return { data: { success: true } };
+  },
 };
 
 export const contactAPI = {
-  sendMessage: (data) => api.post('/contact', data),
-  getMessages: () => api.get('/contact'),
-  markRead: (id, read) => api.put(`/contact/${id}/read`, { read }),
-  delete: (id) => api.delete(`/contact/${id}`),
+  sendMessage: async (data) => {
+    const res = await messagesService.sendMessage(data);
+    return { data: res };
+  },
+  getMessages: async () => {
+    const data = await messagesService.getMessages();
+    return { data: { success: true, data, count: data.length } };
+  },
+  markRead: async (id, read) => {
+    const res = await messagesService.markRead(id, read);
+    return { data: { success: true, data: res } };
+  },
+  delete: async (id) => {
+    await messagesService.delete(id);
+    return { data: { success: true } };
+  },
 };
 
 export const statsAPI = {
-  getStats: () => api.get('/stats'),
+  getStats: async () => {
+    const [projects, skills, experience, education, messages] = await Promise.all([
+      projectsService.getAll({ all: 'true' }),
+      skillsService.getAll(),
+      experienceService.getAll(),
+      educationService.getAll(),
+      messagesService.getMessages(),
+    ]);
+
+    return {
+      data: {
+        success: true,
+        data: {
+          projects: {
+            total: projects.length,
+            featured: projects.filter((p) => p.featured).length,
+            published: projects.filter((p) => p.published !== false).length,
+          },
+          skills: {
+            total: skills.length,
+          },
+          experience: {
+            total: experience.length,
+          },
+          education: {
+            total: education.length,
+          },
+          messages: {
+            total: messages.length,
+            unread: messages.filter((m) => !m.read).length,
+          },
+          overview: {
+            lastProjectUpdated: projects[0]?.title || 'None',
+            lastActiveAt: new Date().toISOString(),
+            profileName: 'Mohamed Alaa',
+          },
+        },
+      },
+    };
+  },
 };
 
 export const uploadAPI = {
-  uploadImage: (formData) =>
-    api.post('/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }),
+  uploadImage: async (formData) => {
+    const file = formData.get('image');
+    if (!file) throw new Error('No file provided');
+    const url = await storageService.uploadFile(file);
+    return { data: { success: true, url } };
+  },
 };
 
-export default api;
+export default {
+  authAPI,
+  profileAPI,
+  projectsAPI,
+  skillsAPI,
+  experienceAPI,
+  educationAPI,
+  contactAPI,
+  statsAPI,
+  uploadAPI,
+};
