@@ -97,11 +97,9 @@ const About = ({ profile }) => {
 
                 {/* Floating Chip 1: Top Right - Minya University */}
                 <motion.div
-                  initial={{ y: -10, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.3, duration: 0.5 }}
-                  className="absolute -top-3 -right-3 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dark-900/90 border border-slate-700/80 shadow-xl backdrop-blur-md text-xs text-slate-200"
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute -top-3 -right-3 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dark-900/90 border border-cyan-500/30 shadow-xl backdrop-blur-md text-xs text-slate-200"
                 >
                   <GraduationCap className="w-4 h-4 text-cyan-400 shrink-0" />
                   <span className="font-medium">Minya University '24</span>
@@ -109,11 +107,9 @@ const About = ({ profile }) => {
 
                 {/* Floating Chip 2: Bottom Left - 600+ ICPC */}
                 <motion.div
-                  initial={{ y: 10, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.4, duration: 0.5 }}
-                  className="absolute -bottom-3 -left-3 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dark-900/90 border border-slate-700/80 shadow-xl backdrop-blur-md text-xs text-slate-200"
+                  animate={{ y: [0, 6, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                  className="absolute -bottom-3 -left-3 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-dark-900/90 border border-amber-500/30 shadow-xl backdrop-blur-md text-xs text-slate-200"
                 >
                   <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
                   <span className="font-medium">600+ ICPC Problems Solved</span>

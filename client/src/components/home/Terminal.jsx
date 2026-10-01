@@ -19,7 +19,6 @@ const initialHistory = [
 const Terminal = ({ onNavigate }) => {
   const [history, setHistory] = useState(initialHistory);
   const [inputVal, setInputVal] = useState('');
-  const bottomRef = useRef(null);
 
   const executeCommand = (cmdStr) => {
     const trimmed = cmdStr.trim().toLowerCase();
@@ -86,9 +85,16 @@ const Terminal = ({ onNavigate }) => {
     executeCommand(inputVal);
   };
 
+  const scrollContainerRef = useRef(null);
+  const isFirstRender = useRef(true);
+
   useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }
   }, [history]);
 
@@ -114,7 +120,10 @@ const Terminal = ({ onNavigate }) => {
       </div>
 
       {/* Terminal Content Screen */}
-      <div className="p-4 sm:p-5 h-64 sm:h-72 overflow-y-auto bg-dark-950/80 text-slate-300 space-y-3 font-mono">
+      <div
+        ref={scrollContainerRef}
+        className="p-4 sm:p-5 h-64 sm:h-72 overflow-y-auto bg-dark-950/80 text-slate-300 space-y-3 font-mono"
+      >
         {history.map((item, idx) => (
           <div key={idx} className="leading-relaxed">
             {item.type === 'command' ? (
@@ -130,7 +139,6 @@ const Terminal = ({ onNavigate }) => {
             )}
           </div>
         ))}
-        <div ref={bottomRef} />
       </div>
 
       {/* Interactive Input Line */}

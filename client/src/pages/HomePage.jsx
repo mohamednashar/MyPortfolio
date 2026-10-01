@@ -9,6 +9,8 @@ import Projects from '../components/home/Projects';
 import Experience from '../components/home/Experience';
 import Education from '../components/home/Education';
 import Contact from '../components/home/Contact';
+import AnimatedBackground from '../components/common/AnimatedBackground';
+import CursorSpotlight from '../components/common/CursorSpotlight';
 import {
   profileAPI,
   projectsAPI,
@@ -78,9 +80,13 @@ const HomePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-dark-950 text-slate-100 flex flex-col selection:bg-brand-cyan/20 selection:text-brand-cyan">
+    <div className="relative min-h-screen bg-dark-950 text-slate-100 flex flex-col selection:bg-brand-cyan/20 selection:text-brand-cyan overflow-hidden">
+      {/* Living Ambient Animated Background & Cursor Spotlight */}
+      <AnimatedBackground />
+      <CursorSpotlight />
+
       <Navbar profile={profile} />
-      <main className="flex-1">
+      <main className="relative z-10 flex-1">
         <Hero profile={profile} />
         <StatsStrip />
         <About profile={profile} />

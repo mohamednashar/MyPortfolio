@@ -143,6 +143,39 @@ const Hero = ({ profile }) => {
             className="lg:col-span-5 w-full flex justify-center"
           >
             <div className="w-full relative">
+              {/* Floating Live Badge Top Right */}
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute -top-4 -right-4 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-dark-900/95 border border-cyan-500/40 shadow-lg shadow-cyan-500/20 backdrop-blur-md z-20 text-xs font-semibold text-cyan-300"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
+                </span>
+                <span>🏆 ECPC 2022 Finalist</span>
+              </motion.div>
+
+              {/* Floating Live Badge Bottom Left */}
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                className="absolute -bottom-4 -left-4 hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-dark-900/95 border border-indigo-500/40 shadow-lg shadow-indigo-500/20 backdrop-blur-md z-20 text-xs font-semibold text-indigo-300"
+              >
+                <span className="text-amber-400">⚡</span>
+                <span>600+ ICPC Problems</span>
+              </motion.div>
+
+              {/* Floating Live Badge Mid Left */}
+              <motion.div
+                animate={{ y: [0, -7, 0] }}
+                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+                className="absolute top-1/2 -left-6 -translate-y-1/2 hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-dark-900/95 border border-emerald-500/40 shadow-lg backdrop-blur-md z-20 text-[11px] font-semibold text-emerald-300"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                <span>Minya Eng Alum</span>
+              </motion.div>
+
               {/* Outer decorative glowing rings */}
               <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 rounded-3xl blur-xl opacity-70 group-hover:opacity-100 transition duration-1000 -z-10" />
               <Terminal onNavigate={scrollTo} />
